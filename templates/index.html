@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Text Extractor</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-***********" crossorigin="anonymous">
+    <!-- Font Awesome CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        .extracted-text-container {
+            position: relative;
+            border: none;
+            border-radius: 0.25rem;
+        }
+
+        .extracted-text {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 0;
+            background-color: #f8f9fa;
+            font-size: 1rem;
+            line-height: 1.5;
+            border: none;
+            resize: none; /* Disable resizing */
+            overflow: hidden; /* Remove scrolling */
+        }
+
+        .copy-icon {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Upload an Image to Extract Text</h1>
+        <form action="/" method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="file" class="form-label">Choose an Image File:</label>
+                <input type="file" class="form-control" id="file" name="file" accept="image/*">
+            </div>
+            <button type="submit" class="btn btn-primary">Upload Image</button>
+        </form>
+
+        {% if extracted_text %}
+            <hr class="my-4">
+            <div class="mb-3 extracted-text-container">
+                <h2 class="mt-4">Extracted Text:</h2>
+                <div style="position: relative;">
+                    <textarea class="extracted-text" readonly>{{ extracted_text }}</textarea>
+                    <i class="fas fa-copy copy-icon" onclick="copyToClipboard()"></i>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-***********" crossorigin="anonymous"></script>
+    <!-- Font Awesome JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+
+    <script>
+        function copyToClipboard() {
+            var textArea = document.querySelector('.extracted-text');
+            textArea.select();
+            document.execCommand('copy');
+            alert('Text copied to clipboard!');
+        }
+
+        function autoResizeTextarea() {
+            const textArea = document.querySelector('.extracted-text');
+            textArea.style.height = 'auto'; // Reset the height
+            textArea.style.height = textArea.scrollHeight + 'px'; // Set the height to the scroll height
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const textArea = document.querySelector('.extracted-text');
+            if (textArea) {
+                autoResizeTextarea(); // Adjust the height on page load
+            }
+        });
+    </script>
+</body>
+</html>
